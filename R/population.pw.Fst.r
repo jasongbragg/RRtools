@@ -7,12 +7,15 @@
 #' @author Jason Bragg (jasongbragg@gmail.com)
 #' @export
 
-population.pw.spatial.dist <- function(dart_data, population) {
+population.pw.Fst <- function(dart_data, population, basedir, species, dataset) {
 
    meta <- dart_data$meta
    p <- population
-
    pop_info <- get.population.info(meta, p, method="average")
+
+   require(SNPRelate)
+   gds_file <- dart2gds(dart_data, basedir, species, dataset)
+   gds <- snpgdsOpen(gds_file)
 
    Fst <- mat.or.vec(pop_info$number, pop_info$number)
 
@@ -20,14 +23,19 @@ population.pw.spatial.dist <- function(dart_data, population) {
       for (j in 1:pop_info$number) {
 
          if (i > j) {
-            LLi <- pop_info$lon_lat[i,]
-            LLj <- pop_info$lon_lat[j,]
-            Dij <- distCosine(as.numeric(LLi),as.numeric(LLj))
-            S[i,j] <- Dij
+ 
+            i_pop_indices  <- which(p == pop_info$names[i])
+            j_pop_indices  <- which(p == pop_info$names[j])
+            ij_pop_indices <- union(i_pop_indices, j_pop_indices) 
+
+            fst      <- snpgdsFst(gds, population=as.factor(p[ij_pop_indices]), method="W&H02", sample.id=dart_data$sample_names[ij_pop_indices], maf=0.2, missing.rate=0.2)
+            Fst[i,j] <- fst$Fst 
          }
       }
    }
 
+
+   snpgdsClose(gds)
    colnames(Fst) <- pop_info$names
    rownames(Fst) <- pop_info$names
    flist <- list(Fst=Fst, pop_info=pop_info) 
