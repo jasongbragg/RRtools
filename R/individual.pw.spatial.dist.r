@@ -25,6 +25,7 @@ individual.pw.spatial.dist <- function(dart_data) {
             LLj <- c(meta$long[j], meta$lat[j])
             Dij <- distCosine(as.numeric(LLi),as.numeric(LLj))
             S[i,j] <- Dij
+            S[j,i] <- Dij
          }
       }
    }
