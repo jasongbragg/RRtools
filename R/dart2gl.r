@@ -15,6 +15,7 @@
 
 dart2gl <- function(dart_data, basedir, species, dataset, meta_data=FALSE) {
 
+   require(adegenet)
    treatment <- dart_data$treatment 
 
    if (dart_data$encoding == "altcount") {

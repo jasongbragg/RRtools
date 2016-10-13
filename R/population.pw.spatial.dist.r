@@ -26,6 +26,7 @@ population.pw.spatial.dist <- function(dart_data, population) {
             LLj <- pop_info$lon_lat[j,]
             Dij <- distCosine(as.numeric(LLi),as.numeric(LLj))
             S[i,j] <- Dij
+            S[j,i] <- Dij
          }
       }
    }

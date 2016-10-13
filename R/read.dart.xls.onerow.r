@@ -29,6 +29,7 @@
 
 read.dart.xls.onerow <- function(basedir,species,dataset,topskip, nmetavar, nas="-", altcount=TRUE, euchits=FALSE) {
 
+   require(readxl)
    datafile  <- paste(basedir,species,"/dart_raw/Report-",dataset,".xlsx",sep="")
 
    cat("\n")
