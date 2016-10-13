@@ -19,7 +19,7 @@ population.pw.Fst <- function(dart_data, population, basedir, species, dataset) 
 
    Fst  <- mat.or.vec(pop_info$number, pop_info$number)
    Nloc <- mat.or.vec(pop_info$number, pop_info$number)
-   S    <- mat.or.vec(pop_info$number, pop_info$number)
+   Nind <- mat.or.vec(pop_info$number, pop_info$number)
  
    for (i in 1:pop_info$number) {
       for (j in 1:pop_info$number) {
@@ -32,8 +32,11 @@ population.pw.Fst <- function(dart_data, population, basedir, species, dataset) 
 
             fst      <- snpgdsFst(gds, population=as.factor(p[ij_pop_indices]), method="W&H02", sample.id=dart_data$sample_names[ij_pop_indices], maf=0.2, missing.rate=0.2, with.id=TRUE)
             Fst[i,j]  <- fst$Fst
+            Fst[j,i]  <- fst$Fst
             Nloc[i,j] <- length(fst$snp.id)
-            S[i,j]    <- length(fst$sample.id) 
+            Nloc[j,i] <- length(fst$snp.id)
+            Nind[i,j] <- length(fst$sample.id) 
+            Nind[j,i] <- length(fst$sample.id) 
          }
       }
    }
@@ -44,9 +47,9 @@ population.pw.Fst <- function(dart_data, population, basedir, species, dataset) 
    rownames(Fst)  <- pop_info$names
    colnames(Nloc) <- pop_info$names
    rownames(Nloc) <- pop_info$names
-   colnames(S)    <- pop_info$names
-   rownames(S)    <- pop_info$names
+   colnames(Nind) <- pop_info$names
+   rownames(Nind) <- pop_info$names
 
-   flist <- list(Fst=Fst, Nloc=Nloc, S=S, pop_info=pop_info) 
+   flist <- list(Fst=Fst, Nloc=Nloc, Nind=Nind, pop_info=pop_info) 
    return(flist)
 }
