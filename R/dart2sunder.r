@@ -4,7 +4,7 @@
 #' Input is a dart data object with altcount genotype encoding
 #' (0=hom ref, 1=het, 2=hom alt).
 #' 
-#' @param dart_data -- a dart data object [Required]
+#' @param dms -- a dart data object [Required]
 #' @param basedir -- name of the base directory for R&R
 #' @param species -- species name
 #' @param dataset -- dataset name
@@ -14,14 +14,14 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' dart_gi <- dart2rangexp(dart_data, meta.csv)
+#' dart_gi <- dart2rangexp(dms, meta.csv)
 #' }
 
-dart2sunder <- function(dart_data, basedir, species, dataset, pop) {
+dart2sunder <- function(dms, basedir, species, dataset, pop) {
 
    # Step 1, get the genotypes ready
-   treatment <- dart_data$treatment 
-   if (dart_data$encoding == "altcount") {
+   treatment <- dms$treatment 
+   if (dms$encoding == "altcount") {
       cat(" Dart data object for ", dataset, "in species", species, "\n")
       cat(" Dart data object found with altcount genotype encoding. Commencing conversion to genind. \n")
    } else {

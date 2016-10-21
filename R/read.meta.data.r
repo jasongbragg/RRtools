@@ -60,7 +60,14 @@ read.meta.data <- function(dart_data, basedir, species, dataset, fields=1, nas="
 
    analyses <- "none"
 
-   if ( fields > 0 ) {
+   if ( fields == 1 ) {
+      cat(" Adding analysis field to meta data list \n") 
+      analyses <- matrix(meta_ordered[, 5],)
+      colnames(analyses) <- colnames(meta_ordered)[5]
+   }
+
+
+   if ( fields > 1 ) {
       cat(" Adding analysis fields to meta data list \n") 
       analyses <- as.matrix(meta_ordered[, 5:(5+fields-1)] )
 

@@ -5,10 +5,10 @@
 \title{Returns a dart data object in an object that is ready
 for analysis using software sunder}
 \usage{
-dart2sunder(dart_data, basedir, species, dataset, pop)
+dart2sunder(dms, basedir, species, dataset, pop)
 }
 \arguments{
-\item{dart_data}{-- a dart data object [Required]}
+\item{dms}{-- a dart data object [Required]}
 
 \item{basedir}{-- name of the base directory for R&R}
 
@@ -27,7 +27,7 @@ Input is a dart data object with altcount genotype encoding
 }
 \examples{
 \dontrun{
-dart_gi <- dart2rangexp(dart_data, meta.csv)
+dart_gi <- dart2rangexp(dms, meta.csv)
 }
 }
 \author{

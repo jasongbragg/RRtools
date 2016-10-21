@@ -4,7 +4,8 @@
 \alias{multipop.Fst}
 \title{Returns a matrix of spatial distances among populations}
 \usage{
-multipop.Fst(dart_data, population, basedir, species, dataset)
+multipop.Fst(dart_data, population, basedir, species, dataset, maf_val = 0.2,
+  miss_val = 0.2)
 }
 \arguments{
 \item{dart_data}{-- a dart meta data object [Required]}

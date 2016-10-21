@@ -7,7 +7,7 @@
 #' @author Jason Bragg (jasongbragg@gmail.com)
 #' @export
 
-population.pw.Fst <- function(dart_data, population, basedir, species, dataset) {
+population.pw.Fst <- function(dart_data, population, basedir, species, dataset, maf_val=0.2, miss_val=0.2) {
 
    meta <- dart_data$meta
    p <- population
@@ -30,7 +30,7 @@ population.pw.Fst <- function(dart_data, population, basedir, species, dataset) 
             j_pop_indices  <- which(p == pop_info$names[j])
             ij_pop_indices <- union(i_pop_indices, j_pop_indices) 
 
-            fst      <- snpgdsFst(gds, population=as.factor(p[ij_pop_indices]), method="W&H02", sample.id=dart_data$sample_names[ij_pop_indices], maf=0.2, missing.rate=0.2, with.id=TRUE)
+            fst      <- snpgdsFst(gds, population=as.factor(p[ij_pop_indices]), method="W&H02", sample.id=dart_data$sample_names[ij_pop_indices], maf=maf_val, missing.rate=miss_val, with.id=TRUE)
             Fst[i,j]  <- fst$Fst
             Fst[j,i]  <- fst$Fst
             Nloc[i,j] <- length(fst$snp.id)

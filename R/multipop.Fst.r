@@ -8,7 +8,7 @@
 #' @author Jason Bragg (jasongbragg@gmail.com)
 #' @export
 
-multipop.Fst <- function(dart_data, population, basedir, species, dataset) {
+multipop.Fst <- function(dart_data, population, basedir, species, dataset, maf_val=0.2, miss_val=0.2) {
 
    meta <- dart_data$meta
    p    <- population
@@ -18,7 +18,7 @@ multipop.Fst <- function(dart_data, population, basedir, species, dataset) {
    gds_file <- dart2gds(dart_data, basedir, species, dataset)
    gds      <- snpgdsOpen(gds_file)
 
-   fst      <- snpgdsFst(gds, population=as.factor(p), method="W&H02", sample.id=dart_data$sample_names, maf=0.2, missing.rate=0.2, with.id=TRUE)
+   fst      <- snpgdsFst(gds, population=as.factor(p), method="W&H02", sample.id=dart_data$sample_names, maf=maf_val, missing.rate=miss_val, with.id=TRUE)
 
    snpgdsClose(gds)
    return(fst)
