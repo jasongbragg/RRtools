@@ -12,7 +12,7 @@
 #' find.loci.MAC.lte.value(dart_data, value=0, input_as_names=FALSE)
 #
 
-find.loci.MAC.lte.value <- function(dart_data, value=0, return_as_names=FALSE) {
+find.loci.MAC.lte.value <- function(dart_data, value=0, return_as_names=FALSE, sample_inds) {
 
    # do some checking
    if(dart_data$encoding == "altcount") {
@@ -23,6 +23,11 @@ find.loci.MAC.lte.value <- function(dart_data, value=0, return_as_names=FALSE) {
 
    # do calculations of allele counts
    x <- dart_data$gt
+
+   if ( !missing(sample_inds) ) {
+      x <- x[ as.vector(sample_inds), ]
+   }
+
 
    f0hom <- function(x) {
       length(which(x == 0))

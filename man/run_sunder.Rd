@@ -4,7 +4,7 @@
 \alias{run_sunder}
 \title{Write a dart data list object to an R workspace file}
 \usage{
-run_sunder(s, RandRbase, species, dataset, treatment)
+run_sunder(s, basedir, species, dataset, treatment)
 }
 \arguments{
 \item{species}{-- name of the species in GenuSpec format [required]}

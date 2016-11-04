@@ -14,10 +14,11 @@
 #
  
 
-run_sunder <- function(s,RandRbase,species,dataset, treatment) {
+run_sunder <- function(s, basedir, species, dataset, treatment) {
 
    require(Sunder)
-   s_MCMCCV  <- MCMCCV(gen=s$gen, D_G=s$D_G, D_E=s$D_E, nit=s$nit*10, thinning=s$thinning, theta.max=s$theta.max, theta.init=s$theta.init, run=c(FALSE,TRUE,FALSE), ud=c(0,1,1,0,0), n.validation.set=s$n.validation.set, print.pct=TRUE)
+   s_MCMCCV  <- MCMCCV(gen=s$gen, D_G=s$D_G, D_E=s$D_E, nit=s$nit, thinning=s$thinning, theta.max=s$theta.max, theta.init=s$theta.init, run=c(FALSE,TRUE,FALSE), ud=s$ud, n.validation.set=s$n.validation.set, print.pct=TRUE)
+   
 
   # make directory, write files 
    dir <- paste(basedir, species, "/popgen",sep="")
@@ -46,7 +47,7 @@ run_sunder <- function(s,RandRbase,species,dataset, treatment) {
       cat("  sunder directory: ", su_dir, " already exists, content will be overwritten. \n")
    }
 
-   su_run_file   <- paste(su_dir,"/",species,"_",dataset,"RUN.rda",sep="")
+   su_run_file   <- paste(su_dir,"/",species,"_",dataset,"_RUN_udall.rda",sep="")
 
    save(s_MCMCCV,file=su_run_file)
 

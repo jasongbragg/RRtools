@@ -38,11 +38,11 @@ dart2sunder <- function(dms, basedir, species, dataset, pop) {
    gen[, , 1] <- population_allele_stats$count
    gen[, , 2] <- population_allele_stats$sample - population_allele_stats$count
 
-   D_G <- population_spatial_dist$S
+   D_G <- population_spatial_dist$S / max(population_spatial_dist$S)
    D_E <- population_spatial_dist$S
    theta.max <- c(10,10*max(D_G),10*max(D_E),1,0.01)
    theta.init <- c(1,2,1,1,0.01)
-   ud <- c(0,1,1,0,0)
+   ud <- c(1,1,0,1,1)
    n.validation.set <- dim(gen)[1]*dim(gen)[2]/10
 
    # make directory, write files 
@@ -72,9 +72,9 @@ dart2sunder <- function(dms, basedir, species, dataset, pop) {
       cat("  sunder directory: ", su_dir, " already exists, content will be overwritten. \n")
    }
 
-   su_object_file   <- paste(su_dir,"/",species,"_",dataset,".rda",sep="")
+   su_object_file   <- paste(su_dir,"/",species,"_",dataset,"_udall.rda",sep="")
 
-   su <- list(gen=gen, D_G=D_G, D_E=D_E, nit=1000, thinning=10, theta.max=theta.max, theta.init=theta.init, run=c(FALSE,TRUE,FALSE), ud=ud, n.validation.set=n.validation.set, print.pct=TRUE)
+   su <- list(gen=gen, D_G=D_G, D_E=D_E, nit=10000, thinning=10, theta.max=theta.max, theta.init=theta.init, run=c(FALSE,TRUE,FALSE), ud=ud, n.validation.set=n.validation.set, print.pct=TRUE, ud=ud)
 
    save(su, file=su_object_file)
 
