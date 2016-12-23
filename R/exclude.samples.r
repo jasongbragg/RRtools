@@ -2,7 +2,7 @@
 #' Optionally removes markers that become monomorphic
 #'
 #' @param dart_data              -- dart data list  [required]
-#' @param excluded_sample_file   -- name of a file containing list of samples to be excluded [required]
+#' @param excluded_sample_file   -- name of a file containing list of samples to be excluded 
 #' @param removed_fixed_loci     -- removed snps that are fixed after removal of nominated samples
 #' @export
 #' @author Jason Bragg (jasongbragg@gmail.com)
@@ -10,14 +10,21 @@
 #' exclude.samples(dart_data, excluded_sample_file, remove_fixed_loci=TRUE)
 #
 
-exclude.samples <- function(dart_data, excluded_sample_file, remove_fixed_loci=TRUE) {
+exclude.samples <- function(dart_data, by="file", excluded_sample_file="None", excluded_sample_names, remove_fixed_loci=TRUE) {
 
    dart_data_proc <- dart_data
    genotypes      <- dart_data$gt
 
-   if (excluded_sample_file != "None" ) {
+   if ( by == "file" | by == "names" ) {
 
-      samples_to_exclude <- as.matrix(read.table(excluded_sample_file, header=FALSE))
+      if (by == "file") {
+         samples_to_exclude <- as.matrix(read.table(excluded_sample_file, header=FALSE))
+      } 
+ 
+      if (by == "names") {
+         samples_to_exclude <- excluded_sample_names
+      } 
+      
 
       if ( exists("samples_to_exclude") ) {
 

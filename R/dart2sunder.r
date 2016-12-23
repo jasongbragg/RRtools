@@ -32,6 +32,16 @@ dart2sunder <- function(dms, basedir, species, dataset, pop) {
    population_allele_stats  <- calculate.population.allele.stats(dms, pop)
    population_spatial_dist  <- population.pw.spatial.dist(dms, pop)
 
+   ind_NA_loci <- which( colSums(is.na(population_allele_stats$count)) > 0 )
+   if ( length(ind_NA_loci) > 0 ) {
+      cat("found ",  length(ind_NA_loci), "loci with no data for a population. Removing these loci \n")
+      population_allele_stats$count  <- population_allele_stats$count[,-ind_NA_loci]
+      population_allele_stats$sample <- population_allele_stats$sample[,-ind_NA_loci]
+      population_allele_stats$freq   <- population_allele_stats$freq[,-ind_NA_loci]
+   }
+
+
+
    dgen <- rep(NA, nrow(population_spatial_dist$S)*ncol(population_allele_stats$count)*2)
    gen <- array(dgen, c(nrow(population_spatial_dist$S),ncol(population_allele_stats$count),2))
 
@@ -40,8 +50,8 @@ dart2sunder <- function(dms, basedir, species, dataset, pop) {
 
    D_G <- population_spatial_dist$S / max(population_spatial_dist$S)
    D_E <- population_spatial_dist$S
-   theta.max <- c(10,10*max(D_G),10*max(D_E),1,0.01)
-   theta.init <- c(1,2,1,1,0.01)
+   theta.max <- c(10,10*max(D_G),10*max(D_E),1,0.05)
+   theta.init <- c(0.5,4,1,0.5,0.02)
    ud <- c(1,1,0,1,1)
    n.validation.set <- dim(gen)[1]*dim(gen)[2]/10
 
@@ -74,7 +84,7 @@ dart2sunder <- function(dms, basedir, species, dataset, pop) {
 
    su_object_file   <- paste(su_dir,"/",species,"_",dataset,"_udall.rda",sep="")
 
-   su <- list(gen=gen, D_G=D_G, D_E=D_E, nit=10000, thinning=10, theta.max=theta.max, theta.init=theta.init, run=c(FALSE,TRUE,FALSE), ud=ud, n.validation.set=n.validation.set, print.pct=TRUE, ud=ud)
+   su <- list(gen=gen, D_G=D_G, D_E=D_E, nit=100000, thinning=100, theta.max=theta.max, theta.init=theta.init, run=c(FALSE,TRUE,FALSE), ud=ud, n.validation.set=n.validation.set, print.pct=TRUE, ud=ud)
 
    save(su, file=su_object_file)
 

@@ -5,12 +5,13 @@
 \title{Remove a list of samples from a DArT data object  
 Optionally removes markers that become monomorphic}
 \usage{
-exclude.samples(dart_data, excluded_sample_file, remove_fixed_loci = TRUE)
+exclude.samples(dart_data, by = "file", excluded_sample_file = "None",
+  excluded_sample_names, remove_fixed_loci = TRUE)
 }
 \arguments{
 \item{dart_data}{-- dart data list  [required]}
 
-\item{excluded_sample_file}{-- name of a file containing list of samples to be excluded [required]}
+\item{excluded_sample_file}{-- name of a file containing list of samples to be excluded}
 
 \item{removed_fixed_loci}{-- removed snps that are fixed after removal of nominated samples}
 }

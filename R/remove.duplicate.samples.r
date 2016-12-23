@@ -15,6 +15,7 @@
 remove.duplicate.samples <- function(dart_data, least_missing=TRUE, remove_fixed_loci=TRUE) {
 
    cat("  Looking for duplicate sample names \n")
+   rownames(dart_data$gt) <- dart_data$sample_names 
    sample_names <- rownames(dart_data$gt)
 
    sample_counts <- as.matrix(table(as.character(sample_names)))

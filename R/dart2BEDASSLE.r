@@ -4,7 +4,7 @@
 #' Input is a dart data object with altcount genotype encoding
 #' (0=hom ref, 1=het, 2=hom alt).
 #' 
-#' @param dart_data -- a dart data object [Required]
+#' @param dms -- a dart data object [Required]
 #' @param basedir -- name of the base directory for R&R
 #' @param species -- species name
 #' @param dataset -- dataset name
@@ -14,14 +14,14 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' dart_gi <- dart2rangexp(dart_data, meta.csv)
+#' dart_gi <- dart2rangexp(dms, meta.csv)
 #' }
 
-dart2BEDASSLE <- function(dart_data, basedir, species, dataset, pop) {
+dart2BEDASSLE <- function(dms, basedir, species, dataset, pop) {
 
    # Step 1, get the genotypes ready
-   treatment <- dart_data$treatment 
-   if (dart_data$encoding == "altcount") {
+   treatment <- dms$treatment 
+   if (dms$encoding == "altcount") {
       cat(" Dart data object for ", dataset, "in species", species, "\n")
       cat(" Dart data object found with altcount genotype encoding. Commencing conversion to genind. \n")
    } else {
@@ -31,6 +31,14 @@ dart2BEDASSLE <- function(dart_data, basedir, species, dataset, pop) {
    # Population allele stats
    population_allele_stats  <- calculate.population.allele.stats(dms, pop)
    population_spatial_dist  <- population.pw.spatial.dist(dms, pop)
+
+   ind_NA_loci <- which( colSums(is.na(population_allele_stats$count)) > 0 )
+   if ( length(ind_NA_loci) > 0 ) {
+      cat("found ",  length(ind_NA_loci), "loci with no data for a population. Removing these loci \n")
+      population_allele_stats$count  <- population_allele_stats$count[,-ind_NA_loci]
+      population_allele_stats$sample <- population_allele_stats$sample[,-ind_NA_loci]
+      population_allele_stats$freq   <- population_allele_stats$freq[,-ind_NA_loci]
+   }
 
    # make directory, write files 
    dir <- paste(basedir, species, "/popgen",sep="")
@@ -61,7 +69,28 @@ dart2BEDASSLE <- function(dart_data, basedir, species, dataset, pop) {
 
    bd_object_file   <- paste(bd_dir,"/",species,"_",dataset,".rda",sep="")
 
-   bd <- list(population_allele_stats=population_allele_stats, population_spatial_dist=population_spatial_dist)
+   counts       <- population_allele_stats$count
+   sample_sizes <- population_allele_stats$sample
+   D            <- population_spatial_dist$S
+   E            <- population_spatial_dist$S
+   E[,]         <- 0
+   E[1:4,1:4]   <- 1
+   k            <- nrow(counts)
+   loci         <- ncol(counts)
+   delta        <- 0.01
+   aD_stp       <- 1.00
+   aE_stp       <- 0.04
+   a2_stp       <- 0.04
+   thetas_stp   <- 0.07
+   mu_stp       <- 0.17
+   ngen         <- 10000
+   printfreq    <- 10000/20
+   savefreq     <- 10000/10
+   samplefreq   <- 10
+   directory    <- bd_dir
+   prefix       <- paste(species,"_",dataset,sep="")
+
+   bd <- list( counts=counts, sample_sizes=sample_sizes, D=D, E=E, k=k, loci=loci, delta=delta, aD_stp=aD_stp, aE_stp=aE_stp, a2_stp=a2_stp, thetas_stp=thetas_stp, mu_stp=mu_stp, ngen=ngen, printfreq=printfreq, savefreq=savefreq, samplefreq=samplefreq, directory=directory, prefix=prefix)
    save(bd, file=bd_object_file)
 
    return(bd)

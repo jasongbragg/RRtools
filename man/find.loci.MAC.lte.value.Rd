@@ -5,7 +5,8 @@
 \title{Find loci that have a minor allele count (MAC) lower than (or equal to) a nominated value
 Note: if value is set to 0, it will find fixed (non-polymorphic) loci. If none found, returns "None".}
 \usage{
-find.loci.MAC.lte.value(dart_data, value = 0, return_as_names = FALSE)
+find.loci.MAC.lte.value(dart_data, value = 0, return_as_names = FALSE,
+  sample_inds)
 }
 \arguments{
 \item{dart_data}{-- dart data list  [required]}

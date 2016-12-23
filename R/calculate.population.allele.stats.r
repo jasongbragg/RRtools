@@ -45,19 +45,23 @@ calculate.population.allele.stats <- function(dart_data, population) {
             sample[i, j] <- NA
             freq[i, j]   <- NA
          }
-
-
       }
    }
 
+   minor      <- count
+   ind_major  <- which( ( 2*colSums(count) ) > colSums(sample)  )
+   minor[ , ind_major ] <- sample[ , ind_major] - count[ , ind_major ]
+
    colnames(sample) <- colnames(gt)
    colnames(count)  <- colnames(gt)
-   colnames(freq)   <- colnames(freq)
+   colnames(freq)   <- colnames(gt)
+   colnames(minor)  <- colnames(gt)
    rownames(sample) <- pop_info$names
-   rownames(sample) <- pop_info$names
+   rownames(count) <- pop_info$names
    rownames(freq)   <- pop_info$names
+   rownames(minor)  <- pop_info$names
 
-   pop_stats <- list(count=count, sample=sample, freq=freq) 
+   pop_stats <- list(count=count, sample=sample, minor=minor, freq=freq) 
    return(pop_stats)
 }
 
