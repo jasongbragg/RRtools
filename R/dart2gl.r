@@ -13,7 +13,7 @@
 #' dart_gl <- dart2gl(dart_data, meta.csv)
 #'}
 
-dart2gl <- function(dart_data, basedir, species, dataset, meta_data=FALSE) {
+dart2gl <- function(dart_data, basedir, species, dataset, meta_data=FALSE, return_as_file=FALSE) {
 
    require(adegenet)
    treatment <- dart_data$treatment 
@@ -56,7 +56,7 @@ dart2gl <- function(dart_data, basedir, species, dataset, meta_data=FALSE) {
       cat("  Directory: ", dir, " already exists...  \n")
    }
 
-   gl_dir    <- paste(RandRbase,species,"/popgen/",treatment,"/genlight", sep="")
+   gl_dir    <- paste(basedir,species,"/popgen/",treatment,"/genlight", sep="")
    
    if(!dir.exists(gl_dir)) {
       cat("  genlight directory: ", gl_dir, " does not exist and is being created. \n")
@@ -69,6 +69,9 @@ dart2gl <- function(dart_data, basedir, species, dataset, meta_data=FALSE) {
 
    save(dart_gl, file=gl_file)
 
-   return(dart_gl)
-
+   if (return_as_file) { 
+      return(gl_file)
+   } else {
+      return(dart_gl)
+   }
 }

@@ -4,7 +4,8 @@
 \alias{dart2gl}
 \title{Returns a dart data object as a genlight object}
 \usage{
-dart2gl(dart_data, basedir, species, dataset, meta_data = FALSE)
+dart2gl(dart_data, basedir, species, dataset, meta_data = FALSE,
+  return_as_file = FALSE)
 }
 \arguments{
 \item{dart_data}{-- a dart data object [Required]}
