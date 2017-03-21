@@ -35,7 +35,8 @@ RR.species.params <- function(paramdir, species_file, target_species="all") {
       topskip  <- as.numeric(species_info[i,"topskip"])
       nmetavar <- as.numeric(species_info[i,"nmetavar"])
       dataset  <- as.character(species_info[i,"dataset"])
-      tmp <- list(species=species, topskip=topskip, nmetavar=nmetavar, dataset=dataset)
+      genus_spp  <- as.character(species_info[i,"genus_spp"])
+      tmp <- list(species=species, topskip=topskip, nmetavar=nmetavar, dataset=dataset, genus_spp=genus_spp)
       s[[species]] <- tmp
    }
    return(s)

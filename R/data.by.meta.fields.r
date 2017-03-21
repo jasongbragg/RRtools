@@ -28,17 +28,24 @@ data.by.meta.fields <- function(dart_data, fields, basedir, species, dataset, ob
       field <- fields[i]
 
       ind_remove      <- which( is.na( dm$meta$analyses[ , field ] ) )   
-   
       nm              <- list()
-      if (length(ind_remove) > 0) {
 
+      if (length(ind_remove) > 0) {
          nm$analyses     <- dm$meta$analyses[ -ind_remove,  , drop=FALSE] 
          nm$lat          <- dm$meta$lat[ -ind_remove ]
          nm$long         <- dm$meta$long[ -ind_remove ]
          nm$sample_names <- dm$meta$sample_names[ -ind_remove ]
          nm$site         <- dm$meta$site[ -ind_remove ]
+         ndm             <- dart.meta.data.merge(dm,nm)
+
+      } else {
+         nm$analyses     <- dm$meta$analyses 
+         nm$lat          <- dm$meta$lat
+         nm$long         <- dm$meta$long
+         nm$sample_names <- dm$meta$sample_names
+         nm$site         <- dm$meta$site
+         ndm             <- dart.meta.data.merge(dm,nm)
       }
-      ndm   <- dart.meta.data.merge(dm,nm)
 
       ndm$treatment <- paste(ndm$treatment,"_Field_", field, sep="")
       file <- write.dart.data(ndm, basedir, species, dataset)
