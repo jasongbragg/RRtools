@@ -74,9 +74,7 @@ dart2JSFS <- function(dms, basedir, species, samples) {
    }
    private <- c(sum(JSFS[1,]), sum(JSFS[,1]), sum(JSFS[-1,-1]))
 
-   div_calcs <- diversity_estimates_MOP(gt_SNP)
-
-   SFS <- list(SFS=SFS, p1SFS=p1SFS, p2SFS=p2SFS, JSFS=JSFS, indp1=samples$p1, indp2=samples$p2, private=private, div_calcs=div_calcs)
+   SFS <- list(SFS=SFS, p1SFS=p1SFS, p2SFS=p2SFS, JSFS=JSFS, indp1=samples$p1, indp2=samples$p2, private=private)
 
    return(SFS)
 

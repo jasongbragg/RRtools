@@ -14,11 +14,11 @@
 
 dart2genepop <- function(dms, basedir, species, dataset, pop, maf_val=0.05, pop_miss_na=TRUE) {
 
+   treatment <- dms$treatment 
    if (dms$encoding == "altcount") {
 
       cat(" Dart data object for ", dataset, "in species", species, "\n")
       cat(" Dart data object found with altcount genotype encoding. Commencing conversion to genepop. \n")
-      gp_gt <- dms$gt
 
    } else {
       cat(" Fatal Error: The dart data object does not appear to have altcount genotype encoding. \n"); stop()
@@ -30,7 +30,8 @@ dart2genepop <- function(dms, basedir, species, dataset, pop, maf_val=0.05, pop_
    ind_small_maf <- which( (allele_frequency$P < maf_val) | allele_frequency$P > (1-maf_val) )
    if ( length(ind_small_maf ) > 0 ) {
       cat("found ",  length(ind_small_maf), "loci with MAF smaller than ", maf_val," and removing these loci \n")
-      gp_gt <- gp_gt[,-ind_small_maf]
+      dms <- remove.snps.from.dart.data(dms, ind_small_maf, input_as_names=FALSE)
+      #gp_gt <- gp_gt[,-ind_small_maf]
    }
 
    # do some filtering
@@ -39,17 +40,18 @@ dart2genepop <- function(dms, basedir, species, dataset, pop, maf_val=0.05, pop_
    ind_NA_loci <- which( colSums(is.na(population_allele_stats$count)) > 0 )
    if ( length(ind_NA_loci) > 0 ) {
       cat("found ",  length(ind_NA_loci), "loci with no data for a population. Removing these loci \n")
-      gp_gt <- gp_gt[,-ind_NA_loci]
+      dms <- remove.snps.from.dart.data(dms, ind_NA_loci, input_as_names=FALSE)
+      #gp_gt <- gp_gt[,-ind_NA_loci]
    }
 
-
+   gp_gt <- dms$gt
    gp_gt[ gp_gt == 0 ] <- "0101"
    gp_gt[ gp_gt == 1 ] <- "0102"
    gp_gt[ gp_gt == 2 ] <- "0202"
 
    gp_gt[ is.na(gp_gt) ] <- "0000"
 
-   treatment <- dms$treatment 
+
 
    dir <- paste(basedir, species, "/popgen",sep="")
    if(!dir.exists(dir)) {
@@ -88,8 +90,8 @@ dart2genepop <- function(dms, basedir, species, dataset, pop, maf_val=0.05, pop_
    sink()
 
    # write locus line
-   write(c(vL), ncolumns=(nL), file=gp_file, sep=", ", append=TRUE)
-   sink(gp_file, append = TRUE); cat(c("\n")); sink()
+   write(c(vL), ncolumns=(nL), file=gp_file, sep="\n", append=TRUE)
+   #sink(gp_file, append = TRUE); cat(c("\n")); sink()
 
    poplist <- unique(pop)
    numpop  <- length(poplist)

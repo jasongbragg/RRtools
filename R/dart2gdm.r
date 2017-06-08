@@ -1,5 +1,5 @@
 #' Prepares input files that are ready
-#' for analysis using software localdiff
+#' for analysis using R package gdm
 #'
 #' Input is a dart data object with altcount genotype encoding
 #' (0=hom ref, 1=het, 2=hom alt).
@@ -14,10 +14,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' ld_files <- dart2localdiff(gms, etc)
+#' gdm_files <- dart2gdm(gms, etc)
 #' }
 
-dart2localdiff <- function(dms, basedir, species, dataset, pop) {
+dart2gdm <- function(dms, basedir, species, dataset, pop, varfile, climdir) {
 
    # Step 1, get the genotypes ready
    treatment <- dms$treatment 
@@ -60,51 +60,29 @@ dart2localdiff <- function(dms, basedir, species, dataset, pop) {
       cat("  Directory: ", dir, " already exists...  \n")
    }
 
-   ld_dir    <- paste(basedir,species,"/popgen/",treatment,"/localdiff", sep="")
+   gdm_dir    <- paste(basedir,species,"/popgen/",treatment,"/gdm", sep="")
    
-   if(!dir.exists(ld_dir)) {
-      cat("  localdiff directory: ", ld_dir, " does not exist and is being created. \n")
-      dir.create(ld_dir)
+   if(!dir.exists(gdm_dir)) {
+      cat("  gdm directory: ", gdm_dir, " does not exist and is being created. \n")
+      dir.create(gdm_dir)
    } else {
-      cat("  localdiff directory: ", ld_dir, " already exists, content will be overwritten. \n")
+      cat("  gdm directory: ", gdm_dir, " already exists, content will be overwritten. \n")
    }
 
-   #ld_object_file   <- paste(ld_dir,"/",species,"_",dataset,".rda",sep="")
 
-   allele_fst_matrix      <- 1-population_allele_fst$Fst
-   allele_cor_matrix      <- cor(t(population_allele_stats$minor))
+   allele_fst_matrix      <- population_allele_fst$Fst
    long_lat               <- population_spatial_dist$pop_info$lon_lat
-   labels                 <- population_spatial_dist$pop_info$names
+   labels                 <- as.matrix(population_spatial_dist$pop_info$names,ncol=1)
 
-   distances_file         <- paste(ld_dir,"/spatial_dist.txt",sep="")
-   allele_fst_file        <- paste(ld_dir,"/allele_fst.txt",sep="")
-   allele_cor_file        <- paste(ld_dir,"/allele_cor.txt",sep="")
-   long_lat_file          <- paste(ld_dir,"/long_lat.txt",sep="")
-   label_file             <- paste(ld_dir,"/labels.txt",sep="")
-
+   clim                   <- get_climate_data(varfile, climdir, long_lat)
+   environ                <- cbind(labels, long_lat, clim)
+   colnames(environ)[1]   <- "sites"
+   allele_fst_file        <- paste(gdm_dir,"/allele_fst.txt",sep="")
+   environ_data_file      <- paste(gdm_dir,"/environ_data.txt",sep="")
  
-   write.table(population_spatial_dist$S, distances_file, col.names=FALSE, row.names=FALSE, quote=FALSE,sep=" ")
    write.table(allele_fst_matrix, allele_fst_file, col.names=FALSE, row.names=FALSE, quote=FALSE,sep=" ")
-   write.table(allele_cor_matrix, allele_cor_file, col.names=FALSE, row.names=FALSE, quote=FALSE,sep=" ")
-   write.table(long_lat, long_lat_file, col.names=FALSE, row.names=FALSE, quote=FALSE,sep=" ")
-   write.table(matrix(labels, nrow=1), label_file, col.names=FALSE, row.names=FALSE, quote=FALSE,sep=" ")
+   write.table(environ, environ_data_file, col.names=TRUE, row.names=FALSE, quote=FALSE,sep=" ")
 
-   allele_fst_pdf         <- paste(ld_dir,"/",species,"_allele_fst.pdf",sep="")
-   pdf(file=allele_fst_pdf)
-   plot(  as.vector(population_spatial_dist$S) , as.vector(allele_fst_matrix), xlab="distance", ylab=paste(species, " Fst",sep="") )
-   dev.off()
-
-   classic_ibd_pdf         <- paste(ld_dir,"/",species,"_ibd_plot.pdf",sep="")
-   pdf(file=classic_ibd_pdf)
-   plot(  as.vector(population_spatial_dist$S) , as.vector(population_allele_fst$Fst) / as.vector(1-population_allele_fst$Fst), xlab="distance", ylab=paste(species, " Fst/(1-Fst)",sep="") )
-   dev.off()
-
-   allele_cor_pdf         <- paste(ld_dir,"/",species,"_allele_cor.pdf",sep="")
-   pdf(file=allele_cor_pdf)
-   plot(  as.vector(population_spatial_dist$S) , as.vector(allele_cor_matrix), xlab="distance", ylab=paste(species, " Cor",sep="") )
-   dev.off()
-
-
-   return(ld_dir)
+   return(gdm_dir)
 
 }

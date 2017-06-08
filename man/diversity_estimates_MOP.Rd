@@ -3,7 +3,7 @@
 \name{diversity_estimates_MOP}
 \alias{diversity_estimates_MOP}
 \title{Provides an estimate of genetic diversity based on  
-muliplicities of polymorphism occuring in DArT sequences}
+muliplicities of polymorphism (MOP) in DArT loci}
 \usage{
 diversity_estimates_MOP(gt, method = "mean")
 }
