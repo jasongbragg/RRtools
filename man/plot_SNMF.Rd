@@ -26,4 +26,3 @@ A pdf file of admixture coefficients is made for a nominated K, R
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

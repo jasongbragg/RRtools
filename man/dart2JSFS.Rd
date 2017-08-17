@@ -32,4 +32,3 @@ ld_files <- dart2localdiff(gms, etc)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

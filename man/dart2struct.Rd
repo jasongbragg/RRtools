@@ -24,4 +24,3 @@ dart_struct <- dart2struct(dart_data, pop_prior=FALSE)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

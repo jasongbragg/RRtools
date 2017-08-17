@@ -17,7 +17,7 @@
 #' gdm_files <- dart2gdm(gms, etc)
 #' }
 
-dart2gdm <- function(dms, basedir, species, dataset, pop, varfile, climdir) {
+dart2gdm <- function(dms, basedir, species, dataset, pop, env_var=FALSE, varfile, climdir) {
 
    # Step 1, get the genotypes ready
    treatment <- dms$treatment 
@@ -74,8 +74,13 @@ dart2gdm <- function(dms, basedir, species, dataset, pop, varfile, climdir) {
    long_lat               <- population_spatial_dist$pop_info$lon_lat
    labels                 <- as.matrix(population_spatial_dist$pop_info$names,ncol=1)
 
-   clim                   <- get_climate_data(varfile, climdir, long_lat)
-   environ                <- cbind(labels, long_lat, clim)
+   if (env_var) {
+      clim                   <- get_climate_data(varfile, climdir, long_lat)
+      environ                <- cbind(labels, long_lat, clim)
+   } else {
+      environ                <- cbind(labels, long_lat)
+   }
+
    colnames(environ)[1]   <- "sites"
    allele_fst_file        <- paste(gdm_dir,"/allele_fst.txt",sep="")
    environ_data_file      <- paste(gdm_dir,"/environ_data.txt",sep="")

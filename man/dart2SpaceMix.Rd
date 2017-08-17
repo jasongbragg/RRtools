@@ -33,4 +33,3 @@ dart_gi <- dart2rangexp(dms, meta.csv)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

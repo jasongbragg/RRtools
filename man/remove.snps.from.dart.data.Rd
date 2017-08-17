@@ -22,4 +22,3 @@ remove.snps.from.dart.data(dart_data, snps_to_remove, input_as_names=FALSE)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

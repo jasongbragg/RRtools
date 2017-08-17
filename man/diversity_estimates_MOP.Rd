@@ -26,4 +26,3 @@ div_calcs <- diversity_estimates_MOP(gt, method="mean")
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

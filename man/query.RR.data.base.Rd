@@ -20,4 +20,3 @@ query.RR.data.base() opens a meta data file associated with a dart dataset
 Jason Bragg (jasongbragg@gmail.com)
 meta_data_file <- query.RR.data.base(dart_data, basedir, species, dataset, RR_db_file, overwrite_meta=TRUE)
 }
-

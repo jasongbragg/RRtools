@@ -23,4 +23,3 @@ AF.summary <- calculate.AF.summary(dart_data)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

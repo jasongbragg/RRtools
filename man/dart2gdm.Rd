@@ -5,7 +5,8 @@
 \title{Prepares input files that are ready
 for analysis using R package gdm}
 \usage{
-dart2gdm(dms, basedir, species, dataset, pop, varfile, climdir)
+dart2gdm(dms, basedir, species, dataset, pop, env_var = FALSE, varfile,
+  climdir)
 }
 \arguments{
 \item{dms}{-- a dart data object [Required]}
@@ -33,4 +34,3 @@ gdm_files <- dart2gdm(gms, etc)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

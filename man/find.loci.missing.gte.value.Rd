@@ -22,4 +22,3 @@ find.loci.missing.gte.value(dart_data, value=0, input_as_names=FALSE)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

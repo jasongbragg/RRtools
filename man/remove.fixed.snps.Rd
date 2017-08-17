@@ -18,4 +18,3 @@ remove.fixed.snps(dart_data)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

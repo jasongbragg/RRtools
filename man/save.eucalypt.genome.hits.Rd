@@ -29,4 +29,3 @@ dart_data <- read.dart.onerow(datafile="Report-DFi16-2154_oneline.csv", topskip=
 \author{
 Jason Bragg (jasongbragg@gmail.com), based on template authored by Arthur Georges (glbugs@aerg.canberra.edu.au)
 }
-

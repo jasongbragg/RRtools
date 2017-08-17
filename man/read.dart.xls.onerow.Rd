@@ -48,4 +48,3 @@ dart_data            <- read.dart.xls.onerow(RandRbase,species,dataset,topskip, 
 \author{
 Jason Bragg (jasongbragg@gmail.com), based on template authored by Arthur Georges (glbugs@aerg.canberra.edu.au)
 }
-

@@ -19,4 +19,3 @@ run_SpaceMix(sm)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

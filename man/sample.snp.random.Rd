@@ -23,4 +23,3 @@ sample.snp.random(dart_data, seed=12345)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

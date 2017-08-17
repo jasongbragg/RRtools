@@ -33,4 +33,3 @@ dart_gi <- dart2snapp(dart_data, meta.csv)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

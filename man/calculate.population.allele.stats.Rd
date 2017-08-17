@@ -27,4 +27,3 @@ popstats <- calculate.population.allele.stats(dart_data, pop)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

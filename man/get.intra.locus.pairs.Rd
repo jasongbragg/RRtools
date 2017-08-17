@@ -18,4 +18,3 @@ Input is a dart, meta, genome object
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

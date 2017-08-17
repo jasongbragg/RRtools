@@ -23,4 +23,3 @@ downsample.snps(dart_data, number=1000, seed=12345)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

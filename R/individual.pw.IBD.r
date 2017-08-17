@@ -15,7 +15,7 @@ individual.pw.IBD <- function(dart_data, basedir, species, dataset) {
    gds_file <- dart2gds(dart_data, basedir, species, dataset)
    gds <- snpgdsOpen(gds_file)
 
-   IBD <- snpgdsIBDMoM(gds, maf=0.2, missing.rate=0.2, num.thread=1)
+   IBD <- snpgdsIBDMoM(gds, maf=0.1, missing.rate=0.2, num.thread=1, kinship=TRUE)
 
    snpgdsClose(gds)
    return(IBD)

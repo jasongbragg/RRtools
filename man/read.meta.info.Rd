@@ -24,4 +24,3 @@ meta_data <- read.dart.meta(datafile=, nas="-")
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

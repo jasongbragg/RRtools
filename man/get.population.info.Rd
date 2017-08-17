@@ -20,4 +20,3 @@ Input is a meta data object
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

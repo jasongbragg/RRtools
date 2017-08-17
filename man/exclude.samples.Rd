@@ -25,4 +25,3 @@ exclude.samples(dart_data, excluded_sample_file, remove_fixed_loci=TRUE)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

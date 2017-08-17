@@ -19,4 +19,3 @@ run_BEDASSLE(bd_par)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

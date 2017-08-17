@@ -31,4 +31,3 @@ VarClimLoc <- get_climate_data(varlist=RRStandardClimLayers, climdir="/home/jaso
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

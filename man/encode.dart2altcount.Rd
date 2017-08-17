@@ -22,4 +22,3 @@ encode.dart2altcount(dart_data)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

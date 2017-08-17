@@ -27,4 +27,3 @@ dart_gl <- dart2gl(dart_data, meta.csv)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

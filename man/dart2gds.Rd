@@ -26,4 +26,3 @@ dart_gds <- dart2gds(dart_data, basedir, species, dataset, meta_data=FALSE)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

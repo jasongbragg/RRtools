@@ -24,4 +24,3 @@ report.dart.qc.stats(dart_data, RandRdir, "FicuRubi", "DFi16-2154")
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

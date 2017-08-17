@@ -24,4 +24,3 @@ remove.duplicate.samples(dart_data, least_missing=TRUE, remove_fixed_loci=TRUE)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

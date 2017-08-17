@@ -21,4 +21,3 @@ Input is a dart data object with altcount genotype encoding
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

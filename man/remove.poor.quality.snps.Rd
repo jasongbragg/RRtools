@@ -23,4 +23,3 @@ remove.poor.quality.snps(dart_data, min_repro=0.975, max_missing=0.25)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

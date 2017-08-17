@@ -30,4 +30,3 @@ dart_data <- dart.genome.hits.merge(dart_data, basedir, species, dataset)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

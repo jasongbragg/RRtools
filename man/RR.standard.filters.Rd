@@ -25,4 +25,3 @@ p <- RR.standard.filters(RandRparam, param_file)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

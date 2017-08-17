@@ -24,4 +24,3 @@ dart_lfmm <- dart2lfmm(dart_data, meta=FALSE)
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

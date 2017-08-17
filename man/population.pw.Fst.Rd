@@ -19,4 +19,3 @@ Input is a dart meta data object
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-

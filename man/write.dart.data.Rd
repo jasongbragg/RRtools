@@ -23,4 +23,3 @@ write.dart.data(dart_data, RandRbase, "FicuRubi", "DFi16-2154")
 \author{
 Jason Bragg (jasongbragg@gmail.com)
 }
-
