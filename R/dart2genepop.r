@@ -12,7 +12,7 @@
 #' dart_gp <- dart2genepop(dart_data, meta=FALSE)
 #' }
 
-dart2genepop <- function(dms, basedir, species, dataset, pop, maf_val=0.05, pop_miss_na=TRUE) {
+dart2genepop <- function(dms, basedir, species, dataset, pop, maf_val=0.05, pop_miss_na=TRUE, exclude_if_single=TRUE) {
 
    treatment <- dms$treatment 
    if (dms$encoding == "altcount") {
@@ -70,7 +70,7 @@ dart2genepop <- function(dms, basedir, species, dataset, pop, maf_val=0.05, pop_
       cat("  Directory: ", dir, " already exists...  \n")
    }
 
-   gp_dir    <- paste(RandRbase,species,"/popgen/",treatment,"/genepop", sep="")
+   gp_dir    <- paste(basedir,species,"/popgen/",treatment,"/genepop", sep="")
    
    if(!dir.exists(gp_dir)) {
       cat("  genepop directory: ", gp_dir, " does not exist and is being created. \n")
@@ -100,14 +100,18 @@ dart2genepop <- function(dms, basedir, species, dataset, pop, maf_val=0.05, pop_
    {
       ithpop <- poplist[p]
       is     <- which(pop == ithpop)
+      if (length(is) > 1) {
       sink(gp_file, append = TRUE); cat(c("POP\n")); sink()
        
-      write.table(cbind(paste(rownames(gp_gt[is,])," ,",sep=" ") , gp_gt[is,]), file=gp_file, sep=" ",quote=FALSE, row.names = FALSE, col.names = FALSE, append=TRUE)
+      write.table(cbind(paste( rownames(gp_gt)[is]," ,",sep=" ") , matrix(gp_gt[is,],nrow=length(is))), file=gp_file, sep=" ",quote=FALSE, row.names = FALSE, col.names = FALSE, append=TRUE)
+      } else {
+         cat("   population ", poplist[p], "has 1 sample, ", rownames(gp_gt)[is], " excluded from gp file \n"  )
+      }
    }
 
    # write data, pop by pop
-   gp_fields <- list(gp_file=gp_file,threatment=treatment)   
+   gp_fields <- list(gp_file=gp_file,treatment=treatment)   
 
-   return(gp_fields)
+   return(gp_file)
 
 }

@@ -23,9 +23,9 @@ dart2gdm <- function(dms, basedir, species, dataset, pop, env_var=FALSE, varfile
    treatment <- dms$treatment 
    if (dms$encoding == "altcount") {
       cat(" Dart data object for ", dataset, "in species", species, "\n")
-      cat(" Dart data object found with altcount genotype encoding. Commencing conversion to genind. \n")
+      cat(" Dart data object found with altcount genotype encoding. \n")
    } else {
-      cat(" Fatal Error: The dart data object does not appear to have altcount genotype encoding. \n"); stop()
+      cat(" The genotype matrix does not appear to have altcount genotype encoding. \n"); stop()
    }
 
    # Population allele stats
@@ -71,6 +71,13 @@ dart2gdm <- function(dms, basedir, species, dataset, pop, env_var=FALSE, varfile
 
 
    allele_fst_matrix      <- population_allele_fst$Fst
+
+   if ( any(allele_fst_matrix < 0) ) {
+      cat("  Warning: Fst value less than zero found, setting to zero for GDM... \n")
+      allele_fst_matrix[ allele_fst_matrix < 0 ] <- 0
+
+   }
+
    long_lat               <- population_spatial_dist$pop_info$lon_lat
    labels                 <- as.matrix(population_spatial_dist$pop_info$names,ncol=1)
 

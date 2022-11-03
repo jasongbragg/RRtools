@@ -12,8 +12,7 @@
 #
  
 sample.one.snp.per.locus.random <- function(dart_data, seed=12345) {
-
-   seed <- 12345
+   
    cat("   Choosing one snp per CloneID at random\n")
    cat("   Using random seed:", seed, "\n")
    set.seed(seed, kind = NULL, normal.kind = NULL)
@@ -44,9 +43,6 @@ sample.one.snp.per.locus.random <- function(dart_data, seed=12345) {
    if (num_clones_with_multiple_snps > 1) {
        cat(" found ", num_clones_with_multiple_snps,"clones with multiple SNPs \n")
        cat(" choosing one snp at random from each, which could take a while \n")
-   } else {
-       cat(" there was already only one snp per clone... is this correct? \n")
-   }
 
 
    for (n in 1:num_clones_with_multiple_snps) {
@@ -77,5 +73,13 @@ sample.one.snp.per.locus.random <- function(dart_data, seed=12345) {
    dart_data_1rspl$locus_repro <- dart_data_1rspl$locus_repro[ -snps_to_remove_cumulative ]
 
    return(dart_data_1rspl)
+
+   } else {
+       cat(" there was already only one snp per clone... is this correct? \n")
+       cat(" returning the data that were input with treatment appended \n")
+       dart_data$treatment   <- paste(dart_data$treatment, "1SNPperClone", sep="_")
+       return(dart_data)
+   }
+
 
 }

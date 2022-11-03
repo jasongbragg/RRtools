@@ -12,35 +12,31 @@
 #' gdm_files <- dart2gdm(gms, etc)
 #' }
 
-make_srast <- function(gdm_dir, pixels_per_degree=20, buff=0.5) {
+make_srast <- function(gdm_dir, pixels_per_degree=20, buff=0.5, return_rast=TRUE, Q=FALSE) {
 
    require(spam)
    require(fields); require(sp); require(raster)
 
    ppd    <- pixels_per_degree
 
-   createGrid = function(min_long,max_long,min_lat,max_lat,npixels_long,npixels_lat)
-   {
-	long.pix=seq(from=min_long,to=max_long, length=npixels_long)
-	lat.pix=seq(from=min_lat,to=max_lat, length=npixels_lat)
-	grid=make.surface.grid( list( long.pix,lat.pix))
-	return(grid)
-   }
-
-   ### pairwise Fst
-
-
    location_file   <- paste(gdm_dir, "/environ_data.txt",sep="")
-   location_info   <- read.table(location_file, header=TRUE)
+
+   if (Q) {
+      location_file   <- paste(gdm_dir, "/environ_Q_data.txt",sep="")
+   }
+   location_info   <- read.table(location_file, header=TRUE, sep=" ")
    lat_long        <- as.matrix(cbind(location_info$long, location_info$lat))
    
    minlon <- min(lat_long[, 1])
    maxlon <- max(lat_long[, 1])
 
    lon_deg_buff <- (maxlon-minlon)*buff
-   minlonbuff <- minlon - lon_deg_buff
-   maxlonbuff <- maxlon + lon_deg_buff
-  
+   minlonbuff   <- minlon - lon_deg_buff
+   maxlonbuff   <- maxlon + lon_deg_buff
+
+   roundminlonbuff <- floor(minlonbuff*ppd)/ppd
+   roundmaxlonbuff <- ceiling(maxlonbuff*ppd)/ppd
+
    minlat <- min(lat_long[, 2])
    maxlat <- max(lat_long[, 2])
 
@@ -48,21 +44,20 @@ make_srast <- function(gdm_dir, pixels_per_degree=20, buff=0.5) {
    minlatbuff <- minlat - lat_deg_buff
    maxlatbuff <- maxlat + lat_deg_buff
 
-   np_lon <- ceiling((maxlonbuff-minlonbuff)*ppd)
-   np_lat <- ceiling((maxlatbuff-minlatbuff)*ppd)
+   roundminlatbuff <- floor(minlatbuff*ppd)/ppd
+   roundmaxlatbuff <- ceiling(maxlatbuff*ppd)/ppd
 
-   grid <- createGrid(minlonbuff,maxlonbuff,minlatbuff,maxlatbuff,np_lon,np_lat)
+   np_lon <- (roundmaxlonbuff-roundminlonbuff)*ppd
+   np_lat <- (roundmaxlatbuff-roundminlatbuff)*ppd
 
-   sgrid        <- as.surface(grid, 0)
-   
-   sr <- raster(sgrid$z,
-            xmn = min(sgrid$x),
-            xmx = max(sgrid$x),
-            ymn = min(sgrid$y),
-            ymx = max(sgrid$y))
-
-   srf  <-  paste(gdm_dir, "/srast.tif",sep="")
-   writeRaster(sr, srf, format="GTiff", overwrite=TRUE)
-
-   return(srf)
+   if (return_rast) {
+      r <- raster(ncol=np_lon, nrow=np_lat, xmx=roundmaxlonbuff, xmn=roundminlonbuff, ymn=roundminlatbuff, ymx=roundmaxlatbuff)
+      values(r) <- 1
+      srf  <-  paste(gdm_dir, "/srast.tif",sep="")
+      writeRaster(r, srf, format="GTiff", overwrite=TRUE)
+      return(srf)
+   } else {
+      gridinfo <- list(np_lon=np_lon, np_lat=np_lat, xmx=roundmaxlonbuff, xmn=roundminlonbuff, ymn=roundminlatbuff, ymx=roundmaxlatbuff)
+      return(gridinfo)
+   }
 }

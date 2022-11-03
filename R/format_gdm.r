@@ -1,4 +1,4 @@
-#' Prepares SNMF Q matrices to act as explanator variables in GDM
+#' Prepares SNMF Q matrices to act as explanatory variables in GDM
 #'
 #' @param gdm_dir -- name of directory containing GDM data
 #' @param Q       -- if TRUE, use Q matrix in GDM 
@@ -20,8 +20,8 @@ format_gdm <- function(gdm_dir, Q=FALSE) {
 
    if (Q == TRUE)  { environ_file    <- paste(gdm_dir, "/environ_Q_data.txt", sep="") }
 
-   gdissim         <- read.table(gdissim_file, header=FALSE) 
-   environ         <- read.table(environ_file, header=TRUE)
+   gdissim         <- read.table(gdissim_file, header=FALSE, sep=" ") 
+   environ         <- read.table(environ_file, header=TRUE, sep=" ")
 
    id_gdissim      <- cbind(environ$sites, gdissim)
    colnames(id_gdissim)[1] <- "sites"

@@ -51,7 +51,7 @@ dart2lea <- function(dart_data, basedir, species, dataset, meta_data=FALSE) {
       cat("  Directory: ", dir, " already exists...  \n")
    }
 
-   lea_dir    <- paste(RandRbase,species,"/popgen/",treatment,"/lea", sep="")
+   lea_dir    <- paste(basedir,species,"/popgen/",treatment,"/lea", sep="")
    
    if(!dir.exists(lea_dir)) {
       cat("  LEA directory: ", lea_dir, " does not exist and is being created. \n")

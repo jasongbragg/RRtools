@@ -51,6 +51,14 @@ process_SNMF_for_gdm <- function(basedir, species, dataset, treatment, pop, Ksel
          t_pop_Q_vals <- cbind(names(t_pop_Q_vals), t_pop_Q_vals)
          colnames(t_pop_Q_vals) <- c("sites", paste("Qprops", 1:(Knum-1), sep="") )
       }
+
+      if (Knum > 2) { 
+         ikmax <- which.max( colSums(pop_Q_vals) ) 
+         t_pop_Q_vals <- pop_Q_vals[,-ikmax]
+         #t_pop_Q_vals <- as.matrix(t_pop_Q_vals, nrow=length(unique(pop)))
+         t_pop_Q_vals <- cbind(rownames(t_pop_Q_vals), t_pop_Q_vals)
+         colnames(t_pop_Q_vals) <- c("sites", paste("Qprops", 1:(Knum-1), sep="") )
+      }
       return(t_pop_Q_vals)
    }
 

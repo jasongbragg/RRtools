@@ -14,10 +14,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' dart_gi <- dart2snapp(dart_data, meta.csv)
+#' dart_gi <- dart2svdq(dart_data, meta.csv)
 #' }
 
-dart2snapp <- function(dart_data, basedir, species, dataset, add_pop=FALSE, pop) {
+dart2svdq <- function(dart_data, basedir, species, dataset, add_pop=FALSE, pop=NULL) {
 
    require(ape)
 
@@ -33,6 +33,42 @@ dart2snapp <- function(dart_data, basedir, species, dataset, add_pop=FALSE, pop)
    # genotypes -- change char for missing
    gt <- dart_data$gt
    gt[ is.na(gt) ] <- "?"
+
+   svdq_2row_gt     <- matrix(rep("", nrow(gt)*2*ncol(gt) ), nrow=nrow(gt)*2)
+   svdq_2row_names  <- matrix(rep("", nrow(gt)*2 ), nrow=nrow(gt)*2)
+
+   for (i in 1:ncol(gt) ) {
+
+      ref_allele <- substr(dart_data$locus_nuc[i],1,1)
+      alt_allele <- substr(dart_data$locus_nuc[i],3,3)
+
+      for ( j in 1:nrow(gt) ) {
+
+           g <- gt[j,i]
+           a1 <- (j-1)*2 + 1
+           a2 <- a1 + 1
+
+           if (g == 0)   { svdq_2row_gt[ a1,i ] <- ref_allele; svdq_2row_gt[ a2,i ] <- ref_allele  }
+           if (g == 1)   { svdq_2row_gt[ a1,i ] <- ref_allele; svdq_2row_gt[ a2,i ] <- alt_allele  }
+           if (g == 2)   { svdq_2row_gt[ a1,i ] <- alt_allele; svdq_2row_gt[ a2,i ] <- alt_allele  }
+           if (g == "?") { svdq_2row_gt[ a1,i ] <- "?"; svdq_2row_gt[ a2,i ] <- "?"  }
+
+      }
+
+   }
+
+
+   for ( k in 1:nrow(gt) ) {
+
+        a1 <- (k-1)*2 + 1
+        a2 <- a1 + 1
+
+        svdq_2row_names[a1,1] <- paste0(rownames(gt)[k],"_1")
+        svdq_2row_names[a2,1] <- paste0(rownames(gt)[k],"_2")
+
+   }
+
+   rownames(svdq_2row_gt) <- svdq_2row_names
 
    # make directory, write files 
    dir <- paste(basedir, species, "/popgen",sep="")
@@ -52,36 +88,35 @@ dart2snapp <- function(dart_data, basedir, species, dataset, add_pop=FALSE, pop)
       cat("  Directory: ", dir, " already exists...  \n")
    }
 
-   snapp_dir    <- paste(basedir,species,"/popgen/",treatment,"/snapp", sep="")
+   svdq_dir    <- paste(basedir,species,"/popgen/",treatment,"/svdq", sep="")
    
-   if(!dir.exists(snapp_dir)) {
-      cat("  RE directory: ", snapp_dir, " does not exist and is being created. \n")
-      dir.create(snapp_dir)
+   if(!dir.exists(svdq_dir)) {
+      cat("  RE directory: ", svdq_dir, " does not exist and is being created. \n")
+      dir.create(svdq_dir)
    } else {
-      cat("  RE directory: ", snapp_dir, " already exists, content will be overwritten. \n")
+      cat("  RE directory: ", svdq_dir, " already exists, content will be overwritten. \n")
    }
 
-   snapp_nexus_file   <- paste(snapp_dir,"/",species,"_",dataset,".nex",sep="")
+   svdq_nexus_file   <- paste(svdq_dir,"/",species,"_",dataset,".nex",sep="")
 
-   if(!add_pop) {
-      sample_names <- rownames(gt)
-   } else {
-      cat(   "   adding taxon names to samples \n")
-      sample_names <- paste(pop, rownames(gt), sep="_")
-   } 
+#   if(!add_pop) {
+#      sample_names <- rownames(gt)
+#   } else {
+#      cat(   "   adding taxon names to samples \n")
+#      sample_names <- paste(rownames(gt), pop, sep="_")
+#   } 
 
-   rownames(gt) <- sample_names
-   write.nexus.data(gt, snapp_nexus_file)
+   write.nexus.data(svdq_2row_gt, svdq_nexus_file)
 
    cat("   nexus file written... changing headers for beautii... \n")
-   snf      <- scan(snapp_nexus_file, what="character", sep="\n")
+   snf      <- scan(svdq_nexus_file, what="character", sep="\n")
    idt      <- grep("DATATYPE", snf)
    snf[idt] <- gsub("DNA", "STANDARD", snf[idt]) 
    snf[idt] <- gsub("INTERLEAVE", "SYMBOLS=\"012\" INTERLEAVE", snf[idt]) 
 
    cat("   overwriting nexus file with adjusted FORMAT line... \n")
-   write(snf, snapp_nexus_file)
+   write(snf, svdq_nexus_file)
 
-   return(snapp_nexus_file)
+   return(svdq_nexus_file)
 
 }

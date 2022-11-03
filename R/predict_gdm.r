@@ -1,4 +1,4 @@
-#' Clip a raster to a convex hull surrounding a set of points
+#' Predict dissimilarity using a GDM 
 #'
 #' @param gdm_dir   -- the directory containing the gdm
 #' @param gdm_model -- the gdm model to use in predictions
@@ -42,11 +42,27 @@ predict_gdm <- function(gdm_dir, gdm_model, srast=NULL, Q=FALSE, qrast=NULL, E=F
             s2_Q_vals <- extract(qdata, matrix(s2_ll,ncol=2))
 
             s1_Q      <- matrix( s1_Q_vals, ncol=length(s1_Q_vals))
-            colnames(s1_Q) <- paste("s1.Q", 1:length(s1_Q_vals), sep="")
-            s2_Q      <- matrix( s2.Q.vals, ncol=length(s2_Q_vals))
-            colnames(s2_Q) <- paste("s2.Q", 1:length(s2_Q_vals), sep="")
-
+            s2_Q      <- matrix( s2_Q_vals, ncol=length(s2_Q_vals))
             gdm_prd   <- cbind(gdm_prd, s1_Q, s2_Q)
+
+            colnames(s1_Q) <- paste("s1.Q", 1:length(s1_Q_vals), sep="")
+            colnames(s2_Q) <- paste("s2.Q", 1:length(s2_Q_vals), sep="")
+         }
+
+         if(E) {
+            edata <- stack(erast)
+            enames <- names(edata)
+            s1_E  <- extract(edata, s1_ll)
+            s2_E  <- extract(edata, s2_ll)
+
+            colnames(s1_E) <- paste("s1.", enames, 1:ncol(s1_E), sep="")
+            colnames(s2_E) <- paste("s2.", enames, 1:ncol(s2_E), sep="")
+
+            gdm_prd   <- cbind(gdm_prd, s1_E, s2_E)
+            
+            # dbg
+            # write.table(file=paste(gdm_dir,"/prd.csv",sep=""),gdm_prd,sep=",",quote=FALSE, row.names=TRUE,col.names=TRUE)
+            #
          }
 
          # do prediction for point to point
@@ -92,6 +108,23 @@ predict_gdm <- function(gdm_dir, gdm_model, srast=NULL, Q=FALSE, qrast=NULL, E=F
          gdm_prd   <- cbind(gdm_prd, s1_Q, s2_Q)
 
       }
+
+     if(E) {
+         edata <- stack(erast)
+         enames <- names(edata)
+         s1_E  <- extract(edata, s1_ll)
+         s2_E  <- extract(edata, s2_ll)
+
+         colnames(s1_E) <- paste("s1.", enames, 1:ncol(s1_E), sep="")
+         colnames(s2_E) <- paste("s2.", enames, 1:ncol(s2_E), sep="")
+
+         gdm_prd   <- cbind(gdm_prd, s1_E, s2_E)
+ 
+         # in case environmental variable undefined in parts of srast
+         gdm_prd <- gdm_prd[ rowSums(is.na(gdm_prd)) <= 0, ]
+         s2_ll   <- gdm_prd[,5:6]
+      }
+
 
       gdm_prediction  <- predict(gdm_model, gdm_prd)
       point2all_rast  <- raster(sdata)

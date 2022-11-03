@@ -9,10 +9,10 @@
 #' @author Jason Bragg (jasongbragg@gmail.com)
 #' @export
 #' @examples
-#' AF.summary <- calculate.AF.summary(dart_data)
+#' AF.summary <- calculate_AF_summary(dart_data)
 
 
-calculate.AF.summary <- function(dart_data) {
+calculate_AF_summary <- function(dart_data) {
 
    treatment <- dart_data$treatment 
 

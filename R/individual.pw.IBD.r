@@ -7,7 +7,7 @@
 #' @author Jason Bragg (jasongbragg@gmail.com)
 #' @export
 
-individual.pw.IBD <- function(dart_data, basedir, species, dataset) {
+individual.pw.IBD <- function(dart_data, basedir, species, dataset, maf=0.1) {
 
    meta <- dart_data$meta
 
@@ -15,7 +15,7 @@ individual.pw.IBD <- function(dart_data, basedir, species, dataset) {
    gds_file <- dart2gds(dart_data, basedir, species, dataset)
    gds <- snpgdsOpen(gds_file)
 
-   IBD <- snpgdsIBDMoM(gds, maf=0.1, missing.rate=0.2, num.thread=1, kinship=TRUE)
+   IBD <- snpgdsIBDMoM(gds, maf=maf, missing.rate=0.2, num.thread=1, kinship=TRUE)
 
    snpgdsClose(gds)
    return(IBD)

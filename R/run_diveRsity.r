@@ -23,12 +23,20 @@ run_diveRsity <- function(gp_file) {
       cat("Fatal error: could not find the genepop file ", gp_file, " and exiting \n"); stop();
    }
 
-   db <- diffCalc(infile=gp_file, outfile=NULL, fst = TRUE)
+   bs <- basicStats(infile=gp_file)
  
-   gp_out <- paste(gp_file, ".div.Rda", sep="")
-   
-   
-   save(db, file=gp_out)
+   npop <- length(bs$main_tab)
+   result <- mat.or.vec(npop,9)
+   colnames(result) <- rownames(bs$main_tab[[1]])
+   rownames(result) <- names(bs$main_tab)
+   for (i in 1:npop) {
+     popstats   <- bs$main_tab[[i]][,"overall"]
+     result[i,] <- popstats
+   }
+
+   gp_out <- paste(gp_file, ".div.out", sep="")
+   write.table(result, gp_out)
+
    return(gp_out)
 }
 

@@ -27,8 +27,6 @@ run_SNMF <- function(lea_file, basedir, species, dataset, treatment) {
       cat("Fatal error: the LEA file ", lea_file, " does not exist \n"); stop();
    }
 
-
-
    dir <- paste(basedir, species, "/popgen",sep="")
    if(!dir.exists(dir)) {
       cat("  Directory: ", dir, " does not exist and is being created. \n")

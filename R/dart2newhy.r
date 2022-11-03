@@ -55,7 +55,7 @@ dart2newhy <- function(dart_data, basedir, species, dataset, meta_data=FALSE) {
       cat("  Directory: ", dir, " already exists...  \n")
    }
 
-   nh_dir    <- paste(RandRbase,species,"/popgen/",treatment,"/newhy", sep="")
+   nh_dir    <- paste(basedir,species,"/popgen/",treatment,"/newhy", sep="")
    
    if(!dir.exists(nh_dir)) {
       cat("  NewHybrids directory: ", nh_dir, " does not exist and is being created. \n")

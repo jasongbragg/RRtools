@@ -20,7 +20,7 @@ openRRstandard <- function(basedir, species, dataset, treatment) {
    ds_file   <- paste(ds_dir,"/",species,"_",dataset,".rda",sep="")
 
   if(!file.exists(ds_file)) {
-      cat("  Standard data file: ", ds_file, " does not exist and is being created. \n"); stop()
+      cat("  Standard data file: ", ds_file, " does not exist  \n"); stop()
    } else {
       cat("  Standard data file: ", ds_file, " will be opened. \n")
    }

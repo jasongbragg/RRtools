@@ -50,7 +50,7 @@ SNMF2gdm <- function(basedir, species, dataset, treatment, process=FALSE, pop=NU
    environQ <- environQ[ order(environQ[,"index"]),]
    environQ <- environQ[,-which( colnames( environQ ) =="index")]
 
-   write.table(environQ, gdm_EQ_file, quote=FALSE, col.names=TRUE, row.names=TRUE)
+   write.table(environQ, gdm_EQ_file, quote=FALSE, col.names=TRUE, row.names=FALSE)
 
    return(gdm_EQ_file)
 

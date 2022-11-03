@@ -9,7 +9,7 @@
 #' @author Jason Bragg (jasongbragg@gmail.com)
 #' @export
 
-dart.meta.data.merge <- function(dart_data, meta_data) {
+merge_gt_meta_data <- function(dart_data, meta_data) {
 
    d <- dart_data
    m <- meta_data
@@ -21,8 +21,9 @@ dart.meta.data.merge <- function(dart_data, meta_data) {
 
    d$gt             <- d$gt[ id , ]
    d$sample_names   <- d$sample_names[ id ]
-
-   m$analyses       <- m$analyses[ im, , drop=FALSE]
+   if (is.list(m$analyses)) {
+      m$analyses       <- lapply(m$analyses, function(x) x <- x[im]) 
+   }
    m$lat            <- m$lat[ im ]
    m$long           <- m$long[ im ]
    m$sample_names   <- m$sample_names[ im ]
@@ -36,7 +37,7 @@ dart.meta.data.merge <- function(dart_data, meta_data) {
    d$sample_names   <- d$sample_names[ oid ]
 
    # remove any fixed snps
-   dp <- remove.fixed.snps(d)
+   dp <- remove_fixed_snps(d)
 
    # check sample names are the same
    if ( !identical(dp$sample_names, m$sample_names) ) {
